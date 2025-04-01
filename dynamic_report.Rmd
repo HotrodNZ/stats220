@@ -66,6 +66,7 @@ plot2 <- ggplot(data = latest_data.df) +
 ```
 
 Below you can find the graphs I have created based on the `r total_people` people that I observed and recorded in this data.
+
 ```{r}
 plot1
 ```
