@@ -1,0 +1,80 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE, fig.width = 5, fig.height = 4)
+
+```
+
+```{css}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body{
+  padding:10px;
+  background-color:#F0F0F0;
+}
+h2{
+  font-weight:Bold;
+  font-family: 'Playfair Display', serif;
+}
+
+```
+
+## What Data has been Collected?
+
+I have been collecting people on how often people pass outside the house im currently staying in, aswell as what they are wearing, where they are heading, and if there is anyone or anything with them.
+
+```{r}
+library(tidyverse)
+
+#Importing Data
+logged_data.df <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTduD-QYzHrsnrfLGQXUrym5syxgn6ZFVov7BFKw1-w4vNMW8-I4Nh7fjbMLrX1-7CgX9PWiVR8KsU7/pub?output=csv")
+latest_data.df <- rename(logged_data.df, 
+                      Time_day = 2,
+                      Animals = 3,
+                      Group_size = 4,
+                      Sex = 5,
+                      Clothes = 6,
+                      Top_Colour = 7,
+                      Direction = 8)
+
+#Summary Statistics
+
+total_people <- nrow(latest_data.df)
+meangroup <- mean(latest_data.df$Group_size) %>%
+  round(1)
+meantime <- mean(latest_data.df$Time_day) %>%
+  round(1)
+#plots
+
+plot1 <- ggplot(data = latest_data.df) + 
+  geom_bar(aes(x = Time_day, fill = Direction))+
+  labs(title = "Directional time?",
+       subtitle = "How does the time of day affect the direction of travel",
+       x = "Time of Day (Hours per 24hr clock)",
+       y = "Number of People ")
+
+plot2 <- ggplot(data = latest_data.df) +
+  geom_bar(aes(x= Time_day, fill = Clothes))+
+  labs(title = "Clothing Trends",
+       subtitle = "Seeing how the time of day affects clothing likelihood",
+       x = "Time of Day (Hours per 24hr clock",
+       y = "Number of People")
+
+```
+
+Below you can find the graphs I have created based on the `r total_people` people that I observed and recorded in this data.
+```{r}
+plot1
+```
+
+```{r}
+plot2
+
+```
+
+## Analysis
+
+From these graphs we can see that at the average time of `r meantime` the majority of people were wearing "School Uniform".
